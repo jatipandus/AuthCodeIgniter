@@ -7,12 +7,25 @@ class Menu extends CI_Controller
     {
         $data['title'] = 'Menu Management';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        //sebaris pakai row array
         //echo "Welcome " . $data['user']['name'];
+        $this->form_validation->set_rules(
+            'menu',
+            'Menu',
+            'required'
+        );
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('menu/index', $data);
-        $this->load->view('templates/footer');
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/index', $data);
+            $this->load->view('templates/footer');
+        }
+    }
+
+    public function addmenu()
+    {
     }
 }
